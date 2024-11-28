@@ -96,6 +96,7 @@ public class Pedido {
     public void setnCartao(int formaPag) {
         this.nCartao = nCartao;
     }
+
     public int getnPedido() {
 
         return nPedido;
@@ -106,8 +107,7 @@ public class Pedido {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -146,42 +146,44 @@ public class Pedido {
             pedido.setEndereco();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-            System.out.println("Endereço:" + pedido.getRua() + ", " + pedido.getCEP() + ", " + pedido.getNumero());
             System.out.println("Pedido feito às " + pedido.hora.format(formatter));
-            System.out.println("Para confirmar digite 1, para alterar digite 0:");
 
-            escolha = sc.nextInt();
-            sc.nextLine();
+            do {
+                System.out.println("Endereço:" + pedido.getRua() + ", " + pedido.getCEP() + ", " + pedido.getNumero());
+                System.out.println("Para confirmar digite 1, para alterar digite 0:");
+                escolha = sc.nextInt();
+                sc.nextLine();
 
-            if (escolha == 0) {
-                pedido.setEndereco();
+                if (escolha == 0) {
+                    pedido.setEndereco();
+                } else {
+                    confirmado = true;
+                }
+            } while (escolha != 1);
+
+            System.out.println("Preço do botijão R$ " + pedido.getPrecoBotijao());
+            System.out.println("Quantos botijões deseja comprar?");
+            pedido.setQtdBotijoes(sc.nextInt());
+
+            System.out.println("Total da compra: " + "R$ " + pedido.calcula());
+
+            LocalTime horaEntrega = pedido.entrega();
+            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm");
+
+            if (horaEntrega.isAfter(pedido.hora)) {
+                System.out.println("Horário de entrega: " + horaEntrega.format(formatter1));
             } else {
-                confirmado = true;
+                System.out.println("Horário de entrega: " + horaEntrega.format(formatter1) + " de amanhã!");
             }
+
+            System.out.print("Digite o número do cartão de crédito:");
+            pedido.setnCartao(sc.nextInt());
+            sc.nextLine();
+            pedido.setStatus("Confirmado");
+            System.out.println("Código do pedido: " + pedido.getnPedido());
+
+
         }
-
-        System.out.println("Preço do botijão R$ " + pedido.getPrecoBotijao());
-        System.out.println("Quantos botijões deseja comprar?");
-        pedido.setQtdBotijoes(sc.nextInt());
-
-        System.out.println("Total da compra: " + "R$ " + pedido.calcula());
-
-        LocalTime horaEntrega = pedido.entrega();
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm");
-
-        if (horaEntrega.isAfter(pedido.hora)) {
-            System.out.println("Horário de entrega: " + horaEntrega.format(formatter1));
-        } else {
-            System.out.println("Horário de entrega: " + horaEntrega.format(formatter1) + " de amanhã!");
-        }
-
-        System.out.print("Digite o número do cartão de crédito:");
-        pedido.setnCartao(sc.nextInt());
-        sc.nextLine();
-        pedido.setStatus("Confirmado");
-        System.out.println("Código do pedido: " + pedido.getnPedido());
-
         return pedido;
     }
 
