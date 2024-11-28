@@ -11,9 +11,9 @@ public class Main {
 
         do {
             System.out.println(" Menu");
-            System.out.println("1 -Fazer Pedido");
-            System.out.println("2- Confirmar entrega");
-            System.out.println("3- Ver pedidos confirmados");
+            System.out.println("1- Fazer Pedido");
+            System.out.println("2- Ver pedidos confirmados");
+            System.out.println("3- Confirmar entrega");
             System.out.println("4- Ver pedidos entregues");
             System.out.println("5- Sair");
 
@@ -22,15 +22,15 @@ public class Main {
 
             switch (escolha) {
                 case 1 -> {
-                    Pedido pedido = Pedido.fazerPedido();
+                   Pedido pedido = Pedido.fazerPedido();
                     pedidos.add(pedido);
                 }
 
                 case 2 -> {
-                    Pedido.confirmarEntrega(pedidos);
+                    Pedido.pedidosConfirmados(pedidos);
                 }
                 case 3 -> {
-                    Pedido.pedidosConfirmados(pedidos);
+                    Pedido.confirmarEntrega(pedidos);
                 }
                 case 4 -> {
                    Pedido.pedidosEntregues(pedidos);

@@ -11,25 +11,10 @@ public class Pedido {
     private LocalTime hora;
     private int qtdBotijoes;
     private float precoBotijao;
-    private int formaPag;
+    private int nCartao;
     private int nPedido;
     private String status;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getFormaPag() {
-        return formaPag;
-    }
-
-    public void setFormaPag(int formaPag) {
-        this.formaPag = formaPag;
-    }
 
     public Pedido() {
         this.nPedido = contador++;
@@ -39,60 +24,91 @@ public class Pedido {
         this.hora = LocalTime.now();
         this.qtdBotijoes = qtdBotijoes;
         this.precoBotijao = 100f;
-        this.formaPag = formaPag;
+        this.nCartao = nCartao;
         this.status = status;
     }
 
-    public int getnPedido() {
-        return nPedido;
-    }
-
-    public float getPrecoBotijao() {
-        return precoBotijao;
-    }
-
-    public void setPrecoBotijao(float precoBotijao) {
-        this.precoBotijao = precoBotijao;
-    }
-
-    public int getQtdBotijoes() {
-        return qtdBotijoes;
-    }
-
-    public void setQtdBotijoes(int qtdBotijoes) {
-        this.qtdBotijoes = qtdBotijoes;
-    }
-
     public String getRua() {
+
         return rua;
     }
 
     public void setRua(String rua) {
+
         this.rua = rua;
     }
 
     public String getCEP() {
+
         return CEP;
     }
 
     public void setCEP(String CEP) {
+
         this.CEP = CEP;
     }
 
     public int getNumero() {
+
         return numero;
     }
 
     public void setNumero(int numero) {
+
         this.numero = numero;
     }
 
     public LocalTime getHora() {
+
         return hora;
     }
 
     public void setHora(LocalTime hora) {
+
         this.hora = hora;
+    }
+
+    public int getQtdBotijoes() {
+
+        return qtdBotijoes;
+    }
+
+    public void setQtdBotijoes(int qtdBotijoes) {
+
+        this.qtdBotijoes = qtdBotijoes;
+    }
+
+    public float getPrecoBotijao() {
+
+        return precoBotijao;
+    }
+
+    public void setPrecoBotijao(float precoBotijao) {
+
+        this.precoBotijao = precoBotijao;
+    }
+
+    public int getnCartao() {
+
+        return nCartao;
+    }
+
+    public void setnCartao(int formaPag) {
+        this.nCartao = nCartao;
+    }
+    public int getnPedido() {
+
+        return nPedido;
+    }
+
+    public String getStatus() {
+
+        return status;
+    }
+
+    public void setStatus(String status)
+    {
+        this.status = status;
     }
 
     public float calcula() {
@@ -106,14 +122,14 @@ public class Pedido {
     public void setEndereco() {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("ENDEREÇO");
-        System.out.println("Rua:");
+        System.out.println("---ENDEREÇO---");
+        System.out.print("Rua:");
         setRua(sc.nextLine());
 
-        System.out.println("CEP:");
+        System.out.print("CEP:");
         setCEP(sc.nextLine());
 
-        System.out.println("Número:");
+        System.out.print("Número:");
         setNumero(sc.nextInt());
         sc.nextLine();
 
@@ -129,13 +145,10 @@ public class Pedido {
 
             pedido.setEndereco();
 
-            LocalTime localTime = LocalTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-            pedido.setHora(localTime);
-
 
             System.out.println("Endereço:" + pedido.getRua() + ", " + pedido.getCEP() + ", " + pedido.getNumero());
-            System.out.println("Pedido feito às " + localTime.format(formatter));
+            System.out.println("Pedido feito às " + pedido.hora.format(formatter));
             System.out.println("Para confirmar digite 1, para alterar digite 0:");
 
             escolha = sc.nextInt();
@@ -157,19 +170,28 @@ public class Pedido {
         LocalTime horaEntrega = pedido.entrega();
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm");
 
-        if (horaEntrega.isAfter(LocalTime.now())) {
+        if (horaEntrega.isAfter(pedido.hora)) {
             System.out.println("Horário de entrega: " + horaEntrega.format(formatter1));
         } else {
-            System.out.println("Horário de entrega: " + horaEntrega.format(formatter1) + "de amanhã!");
+            System.out.println("Horário de entrega: " + horaEntrega.format(formatter1) + " de amanhã!");
         }
 
-        System.out.println("Digite o número do cartão de crédito:");
-        pedido.setFormaPag(sc.nextInt());
+        System.out.print("Digite o número do cartão de crédito:");
+        pedido.setnCartao(sc.nextInt());
         sc.nextLine();
         pedido.setStatus("Confirmado");
         System.out.println("Código do pedido: " + pedido.getnPedido());
 
         return pedido;
+    }
+
+
+    public static void pedidosConfirmados(List<Pedido> pedidos) {
+        for (Pedido pedidox : pedidos) {
+            if (pedidox.getStatus().equals("Confirmado")) {
+                System.out.println(pedidox);
+            }
+        }
     }
 
     public static void confirmarEntrega(List<Pedido> pedidos){
@@ -190,14 +212,6 @@ public class Pedido {
         }
     }
 
-    public static void pedidosConfirmados(List<Pedido> pedidos) {
-        for (Pedido pedido : pedidos) {
-            if (pedido.getStatus().equals("Confirmado")) {
-                System.out.println(pedido);
-            }
-        }
-    }
-
     public static void pedidosEntregues(List<Pedido> pedidos) {
         for (Pedido P : pedidos) {
             if (P.getStatus().equals("Entregue")) {
@@ -211,7 +225,9 @@ public class Pedido {
         return "Pedido: " + nPedido + ", " +
                 "Status: " + status + ", "+
                 "Endereço: " + rua + ", " + CEP + ", " + numero + ", "+
-                "Hora: " + hora + ", "+
+                "Horário do pedido" +
+                ": " + hora.format(DateTimeFormatter.ofPattern("HH:mm"))+ ", "+
                 "Valor total: " + calcula();
     }
+
 }
