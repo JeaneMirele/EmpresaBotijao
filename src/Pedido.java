@@ -11,7 +11,7 @@ public class Pedido {
     private LocalTime hora;
     private int qtdBotijoes;
     private float precoBotijao;
-    private int nCartao;
+    private double nCartao;
     private int nPedido;
     private String status;
 
@@ -88,12 +88,12 @@ public class Pedido {
         this.precoBotijao = precoBotijao;
     }
 
-    public int getnCartao() {
+    public double getnCartao() {
 
         return nCartao;
     }
 
-    public void setnCartao(int formaPag) {
+    public void setnCartao(double nCartao) {
         this.nCartao = nCartao;
     }
 
@@ -210,8 +210,8 @@ public class Pedido {
                 System.out.println("Status do pedido atualizado : " + p.getStatus());
                 break;
             }
-            if (!encontrado) System.out.println("Pedido não localizado");
         }
+        if (!encontrado) System.out.println("Pedido não localizado");
     }
 
     public static void pedidosEntregues(List<Pedido> pedidos) {
